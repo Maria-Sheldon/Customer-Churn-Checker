@@ -10,7 +10,7 @@ TEAL = ["#0d9488", "#0f2238"]
 
 @st.cache_data
 def load():
-    d = pd.read_csv("data/telco_customer_churn.csv")
+    d = pd.read_csv("telco_customer_churn.csv")
     d["TotalCharges"] = pd.to_numeric(d["TotalCharges"], errors="coerce")
     return d
 @st.cache_resource
