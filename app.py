@@ -19,7 +19,7 @@ import os; os.makedirs('data',exist_ok=True); os.makedirs('models',exist_ok=True
 
 from google.colab import files
 up = files.upload()
-import shutil; shutil.move(list(up.keys())[0], 'data/telco_customer_churn.csv')
+import shutil; shutil.move(list(up.keys())[0], 'telco_customer_churn.csv')
 
 """# Customer Churn Prediction – Telco
 Business problem → data prep → EDA → models → evaluation → saved pipeline.
@@ -29,7 +29,7 @@ Business problem → data prep → EDA → models → evaluation → saved pipel
 
 import pandas as pd, numpy as np, matplotlib.pyplot as plt, seaborn as sns, warnings
 warnings.filterwarnings('ignore')
-df = pd.read_csv('data/telco_customer_churn.csv')
+df = pd.read_csv('telco_customer_churn.csv')
 print(df.shape); display(df.head()); df.info(); display(df.describe())
 print('Duplicates:', df.duplicated().sum(), '| duplicate IDs:', df.customerID.duplicated().sum())
 print(df.isna().sum().sum(), 'NaN; blank TotalCharges:', (df.TotalCharges.str.strip()=='').sum())
@@ -73,7 +73,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
 
-df = pd.read_csv("data/telco_customer_churn.csv")
+df = pd.read_csv("telco_customer_churn.csv")
 df["TotalCharges"] = pd.to_numeric(df["TotalCharges"], errors="coerce")   # 11 blank strings -> NaN (new customers, tenure=0)
 df = df.drop(columns="customerID")                                         # identifier, no predictive value
 y = (df.pop("Churn") == "Yes").astype(int)
@@ -113,9 +113,9 @@ print("tuned", {a: round(b, 3) for a, b in res["Logistic Regression (tuned)"].it
 final_name = max(res, key=lambda k: res[k]["f1"])
 final = best if "tuned" in final_name else models[final_name]
 print("FINAL:", final_name)
-joblib.dump(final, "models/churn_pipeline.pkl")
+joblib.dump(final, "churn_pipeline.pkl")
 # consistency test
-l = joblib.load("models/churn_pipeline.pkl"); assert np.allclose(l.predict_proba(X_te), final.predict_proba(X_te))
+l = joblib.load("churn_pipeline.pkl"); assert np.allclose(l.predict_proba(X_te), final.predict_proba(X_te))
 # feature importance / coefficients
 names = final.named_steps["prep"].get_feature_names_out()
 m = final.named_steps["m"]
@@ -127,9 +127,9 @@ json.dump(dict(final=final_name, results=res, importance=fi, n_train=len(X_tr), 
 """## 4. Evaluation summary & reload test"""
 
 import json, matplotlib.pyplot as plt, seaborn as sns
-R=json.load(open('models/metrics.json')); display(pd.DataFrame(R['results']).T.drop(columns='confusion_matrix').astype(float).round(3)); print('Final:',R['final'])
+R=json.load(open('metrics.json')); display(pd.DataFrame(R['results']).T.drop(columns='confusion_matrix').astype(float).round(3)); print('Final:',R['final'])
 cm=np.array(R['results'][R['final']]['confusion_matrix']); sns.heatmap(cm,annot=True,fmt='d',cmap='Blues',xticklabels=['Pred stay','Pred churn'],yticklabels=['Actual stay','Actual churn']); plt.show()
-l=joblib.load('models/churn_pipeline.pkl'); print('Reloaded model predictions identical:',(l.predict(X_te)==final.predict(X_te)).all())
+l=joblib.load('churn_pipeline.pkl'); print('Reloaded model predictions identical:',(l.predict(X_te)==final.predict(X_te)).all())
 
 """## 5. Write the Streamlit app"""
 
