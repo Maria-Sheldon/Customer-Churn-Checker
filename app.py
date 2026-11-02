@@ -14,9 +14,9 @@ def load():
     d["TotalCharges"] = pd.to_numeric(d["TotalCharges"], errors="coerce")
     return d
 @st.cache_resource
-def model(): return joblib.load("models/churn_pipeline.pkl")
+def model(): return joblib.load("churn_pipeline.pkl")
 @st.cache_data
-def metrics(): return json.load(open("models/metrics.json"))
+def metrics(): return json.load(open("metrics.json"))
 
 df, M = load(), metrics()
 st.sidebar.title("📉 ChurnIQ")
