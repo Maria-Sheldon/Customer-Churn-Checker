@@ -12,7 +12,7 @@ Run cells top to bottom (Runtime → Run all). Cell 2 asks you to upload `WA_Fn-
 ## 1. Setup
 """
 
-!pip -q install streamlit plotly joblib
+pip -q install streamlit plotly joblib
 import os; os.makedirs('data',exist_ok=True); os.makedirs('models',exist_ok=True)
 
 """## 2. Upload dataset (Kaggle: blastchar/telco-customer-churn)"""
