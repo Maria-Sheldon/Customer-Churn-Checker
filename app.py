@@ -1,11 +1,64 @@
 import json, joblib
 import pandas as pd, plotly.express as px, streamlit as st
 
-st.set_page_config(page_title="ChurnIQ", page_icon="📉", layout="wide")
-st.markdown("""<style>
-[data-testid=stSidebar]{background:#0f2238} [data-testid=stSidebar] *{color:#e8f1f8!important}
-h1,h2,h3{color:#0f2238} div[data-testid=stMetric]{background:#f1f7f9;border-left:4px solid #0d9488;padding:10px;border-radius:6px}
-</style>""", unsafe_allow_html=True)
+st.set_page_config(page_title="Churn Checker", page_icon="📉", layout="wide")
+st.markdown("""
+<style>
+
+/* Main application background */
+.stApp {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+/* All text in white */
+.stApp p,
+.stApp span,
+.stApp label,
+.stApp h1,
+.stApp h2,
+.stApp h3,
+.stApp h4,
+.stApp li,
+.stApp div {
+    color: #FFFFFF;
+}
+
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background-color: #0f2238;
+}
+
+[data-testid="stSidebar"] * {
+    color: #FFFFFF !important;
+}
+
+/* Metric cards */
+div[data-testid="stMetric"] {
+    background-color: #171717;
+    border-left: 4px solid #0d9488;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+div[data-testid="stMetric"] label,
+div[data-testid="stMetric"] [data-testid="stMetricValue"] {
+    color: #FFFFFF !important;
+}
+
+/* Dataframes and tables */
+.stDataFrame {
+    color: #FFFFFF;
+}
+
+/* Input fields */
+.stSelectbox div,
+.stNumberInput input {
+    color: #FFFFFF;
+}
+
+</style>
+""", unsafe_allow_html=True)
 TEAL = ["#0d9488", "#0f2238"]
 
 @st.cache_data
@@ -19,7 +72,7 @@ def model(): return joblib.load("churn_pipeline.pkl")
 def metrics(): return json.load(open("metrics.json"))
 
 df, M = load(), metrics()
-st.sidebar.title("📉 ChurnIQ")
+st.sidebar.title("Churn Checker")
 st.sidebar.caption("Predict. Understand. Retain.")
 page = st.sidebar.radio("Navigate", ["Business Overview", "Customer Insights", "Churn Prediction", "Model Performance"])
 st.sidebar.markdown("---")
