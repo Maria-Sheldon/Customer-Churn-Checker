@@ -10,13 +10,13 @@ TEAL = ["#0d9488", "#0f2238"]
 
 @st.cache_data
 def load():
-    d = pd.read_csv("data/telco_customer_churn.csv")
+    d = pd.read_csv("telco_customer_churn.csv")
     d["TotalCharges"] = pd.to_numeric(d["TotalCharges"], errors="coerce")
     return d
 @st.cache_resource
-def model(): return joblib.load("models/churn_pipeline.pkl")
+def model(): return joblib.load("churn_pipeline.pkl")
 @st.cache_data
-def metrics(): return json.load(open("models/metrics.json"))
+def metrics(): return json.load(open("metrics.json"))
 
 df, M = load(), metrics()
 st.sidebar.title("📉 ChurnIQ")
